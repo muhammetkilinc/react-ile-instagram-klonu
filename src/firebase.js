@@ -1,8 +1,15 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signOut, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-import toast from 'react-hot-toast'
+import {
+  getAuth,
+  signOut,
+  onAuthStateChanged,
+  updateProfile,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import toast from "react-hot-toast";
 import { userHandle } from "./utils";
-
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -11,30 +18,82 @@ const firebaseConfig = {
   projectId: "instagramclone-d584d",
   storageBucket: "instagramclone-d584d.appspot.com",
   messagingSenderId: "616631667308",
-  appId: "1:616631667308:web:65198edc721c049ac26649"
+  appId: "1:616631667308:web:65198edc721c049ac26649",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
+const db = getFirestore(app);
 
-onAuthStateChanged(auth, user => {
-        userHandle(user || false)
-})
+onAuthStateChanged(auth, async user => {
+  if (user) {
+    const dbUser = await getDoc(doc(db, "users", user.uid))
+
+    let data = {
+        uid: user.uid,
+        full_name: user.displayName,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        ...dbUser.data()
+    }
+    userHandle(data);
+  } else {
+    userHandle(false);
+  }
+});
 
 export const login = async (email, password) => {
-    try {
-    const response = await signInWithEmailAndPassword(auth, email, password)
-    //
-    } catch (error) {
-        toast.error(error.code)
+  try {
+    const response = await signInWithEmailAndPassword(auth, email, password);
+    return response
+  } catch (error) {
+    toast.error(error.code);
+  }
+};
+
+export const register = async ({ email, password, full_name, username }) => {
+  try {
+    const user = await getDoc(doc(db, "usernames", username));
+
+    if (user.exists()) {
+      toast.error(`${username} kullanıcı adı başkası tarafından kullanılıyor.`)
     }
-}
+    
+    else {
+    const response = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    if (response.user) {
+        await setDoc(doc(db, "usernames", username), {
+          user_id: response.user.uid,
+        });
+        await setDoc(doc(db, "users", response.user.uid), {
+          full_name,
+          username,
+          followers: [],
+          following: [],
+          notifications: [],
+        });
+
+        await updateProfile(auth.currentUser, {
+          displayName: full_name,
+        });
+        return response.user;
+      }
+    }
+  } catch (error) {
+    toast.error(error.code);
+  }
+};
 
 export const logout = async () => {
-    try {
-        await signOut(auth)
-    } catch (error) {
-        toast.error(error.code)
-    }
-}
+  try {
+    await signOut(auth);
+  } catch (error) {
+    toast.error(error.code);
+  }
+};

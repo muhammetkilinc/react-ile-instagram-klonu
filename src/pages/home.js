@@ -4,7 +4,7 @@ export default function Home() {
     return(
         <>
         <Header />
-            Home Page
+            Hoş geldin
         </>
     )
 }
