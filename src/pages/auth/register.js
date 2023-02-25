@@ -25,12 +25,9 @@ export default function Register() {
   return (
     <div className="w-[350px] grid gap-y-3">
       <div className="bg-white border px-[40px] pt-10 pb-6">
-        <a
-          href="https://www.instagram.com/"
-          className="flex justify-center mb-4"
-        >
+          <Link to="/" className="flex justify-center mb-4">
           <img src={logo} alt="logo" className="h-[51px]" />
-        </a>
+          </Link>
 
         <p className="text-[17px] font-semibold text-[#8e8e8e] text-center mb-6">
           Arkadaşlarının fotoğraf ve

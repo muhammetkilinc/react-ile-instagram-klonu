@@ -1,10 +1,7 @@
-import Header from "../components/Header";
-
 export default function Home() {
     return(
-        <>
-        <Header />
-            Hoş geldin
-        </>
+        <div>
+            Ana Sayfa
+        </div>
     )
 }
