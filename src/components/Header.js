@@ -18,6 +18,7 @@ export default function Header() {
             <b>Çıkış Yap</b>
           </button>
         </nav>
+        
       </div>
     </header>
   );
