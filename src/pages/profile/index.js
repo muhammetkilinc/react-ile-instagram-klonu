@@ -4,11 +4,12 @@ import { useParams, useNavigate, NavLink, Outlet } from "react-router-dom"
 import Icon from "../../components/Icon.js"
 import { getUserInfo } from "../../firebase.js"
 import Header from "./components/header.js"
+import ProfileNotFound from "./notFound.js"
 
 export default function ProfileLayout() {
 
     const [loading, setLoading] = useState(true)
-    const [user, setUser] = useState(false)
+    const [user, setUser] = useState(null)
     const {username} = useParams()
     const navigate = useNavigate()
 
@@ -17,11 +18,23 @@ export default function ProfileLayout() {
             setUser(user)
         })
         .catch(err => {
-            navigate("/", {
-                replace: true
-            })
+            setUser(false)
         })
     }, [])
+
+    /*
+
+    navigate("/", {
+        replace: true
+    })
+    
+    */
+
+    if (user == false) {
+       return <ProfileNotFound />
+    }
+
+    
 
     return user && (
         <div>

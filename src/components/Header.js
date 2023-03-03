@@ -4,8 +4,13 @@ import { logout } from "../firebase.js";
 import Icon from "./Icon";
 import Search from "./Search";
 import avatar from '../assets/icons/avatar.png'
+import { useSelector } from "react-redux";
 
 export default function Header() {
+
+
+  const user = useSelector(state => state.auth.user)
+
   return (
     <header className="bg-white border-b border-gray-300">
       <div className="flex items-center justify-between h-[60px] container mx-auto">
@@ -31,9 +36,9 @@ export default function Header() {
           <NavLink to="/">
             <Icon name="heart" size={24} />
           </NavLink>
-          <button onClick={logout}>
+          <NavLink to={`/${user.username}`}>
             <img src={avatar} className="w-6 h-6 rounded-full" alt="avatar" />
-          </button>
+          </NavLink>
         </nav>
         
       </div>
