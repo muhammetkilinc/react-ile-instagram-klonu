@@ -7,6 +7,7 @@ import Separator from "../../components/Separator";
 import { RegisterSchema } from "../../validation";
 import logo from "../../assets/logo/logo1.png";
 import { AiFillFacebook } from "react-icons/ai";
+import { Helmet } from "react-helmet";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -24,10 +25,16 @@ export default function Register() {
 
   return (
     <div className="w-[350px] grid gap-y-3">
+      <Helmet>
+        <title>
+          Kaydol • Instagram
+        </title>
+      </Helmet>
+
       <div className="bg-white border px-[40px] pt-10 pb-6">
-          <Link to="/" className="flex justify-center mb-4">
+        <Link to="/" className="flex justify-center mb-4">
           <img src={logo} alt="logo" className="h-[51px]" />
-          </Link>
+        </Link>
 
         <p className="text-[17px] font-semibold text-[#8e8e8e] text-center mb-6">
           Arkadaşlarının fotoğraf ve

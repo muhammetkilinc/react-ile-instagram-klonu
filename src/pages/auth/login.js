@@ -23,15 +23,14 @@ import iconGooglePlay from "../../assets/icons/iconGooglePlay.png";
 import iconMicrosoft from "../../assets/icons/iconMicrosoft.png";
 import { AiFillFacebook } from "react-icons/ai";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
 
 export default function Login() {
-
-  const user = useSelector(state => state.auth.user)
+  const user = useSelector((state) => state.auth.user);
 
   const images = [screenshot1, screenshot2, screenshot3, screenshot4];
   const location = useLocation();
   const ref = useRef();
-
 
   useEffect(() => {
     let images = ref.current.querySelectorAll("img"),
@@ -55,11 +54,16 @@ export default function Login() {
   };
 
   if (user) {
-    return <Navigate to={location.state?.return_url || "/"} replace={true} />
+    return <Navigate to={location.state?.return_url || "/"} replace={true} />;
   }
 
   return (
     <div className="h-full w-full flex flex-warp overflow-auto items-center gap-x-8 justify-center ">
+
+      <Helmet> 
+        <title>Instagram</title>
+      </Helmet>
+
       <div className="hidden md:block w-[380px] h-[581px] relative bg-logo-pattern bg-[length:468.32px_634.15px] bg-[top_left_-46px]">
         <div
           className="w-[250px] h-[538px] absolute top-[27px] right-[17px]"
@@ -79,7 +83,7 @@ export default function Login() {
       <div className="w-[350px] grid gap-y-3">
         <div className="bg-white border px-[40px] pt-10 pb-6">
           <Link to="/" className="flex justify-center mb-8">
-          <img src={logo} alt="logo" className="h-[51px]" />
+            <img src={logo} alt="logo" className="h-[51px]" />
           </Link>
           <Formik
             validationSchema={LoginSchema}
@@ -93,10 +97,11 @@ export default function Login() {
               <Form className="grid gap-y-1.5">
                 <Input name="username" label="Kullanıcı adı veya e-posta" />
                 <Input type="password" name="password" label="Şifre" />
-                
+
                 <Button
                   type="submit"
-                  disabled={!isValid || !dirty || isSubmitting}>
+                  disabled={!isValid || !dirty || isSubmitting}
+                >
                   Giriş yap
                 </Button>
 
@@ -122,10 +127,7 @@ export default function Login() {
 
         <div className="bg-white border p-4 text-sm text-center">
           Hesabın yok mu?{" "}
-          <Link
-            to="/auth/register"
-            className="font-semibold text-brand"
-          >
+          <Link to="/auth/register" className="font-semibold text-brand">
             Kaydol
           </Link>
         </div>

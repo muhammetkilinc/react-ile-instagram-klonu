@@ -1,5 +1,6 @@
 import classNames from "classnames"
 import { useState, useEffect } from "react"
+import { Helmet } from "react-helmet"
 import { useParams, useNavigate, NavLink, Outlet } from "react-router-dom"
 import Icon from "../../components/Icon.js"
 import { getUserInfo } from "../../firebase.js"
@@ -34,10 +35,19 @@ export default function ProfileLayout() {
        return <ProfileNotFound />
     }
 
-    
+    if (user == null) {
+        return (
+            <div className="flex items-center justify-center">
+                <img src="/gifs/loading.gif" className="w-40 mt-6" alt="" />
+            </div>
+        )
+    }
 
     return user && (
         <div>
+            <Helmet>
+                <title>{user.full_name} (@{user.username}) • Instagram fotoğrafları ve videoları</title>
+            </Helmet>
             <Header user={user} />
             <nav className="border-t flex gap-x-16 justify-center items-center">
                 <NavLink to={`/${username}`} end={true} className={({isActive}) => classNames({

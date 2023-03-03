@@ -7,6 +7,10 @@ import Register from "./pages/auth/register";
 import PrivateRoute from "./components/PrivateRoute";
 import ProfilePosts from "./pages/profile/posts";
 import ProfileTagged from "./pages/profile/tagged";
+import Logout from "./pages/logout";
+import InboxLayout from "./pages/inbox";
+import Inbox from "./pages/inbox/inbox";
+import Chat from "./pages/inbox/chat";
 
 //const { default: Home } = require("./pages/home");
 
@@ -19,6 +23,10 @@ const routes = [
             {
                 index: true,
                 element: <Home />
+            },
+            {
+                path: 'logout',
+                element: <Logout />
             },
             {
                 path: ':username',
@@ -34,6 +42,20 @@ const routes = [
                     },
                 ]
             },
+            {
+                path: 'inbox',
+                element: <InboxLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <Inbox />
+                    },
+                    {
+                        path: ':conversationId',
+                        element: <Chat />
+                    }
+                ]
+            }
         ]
     },
     {
